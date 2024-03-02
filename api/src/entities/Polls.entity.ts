@@ -1,21 +1,9 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { QuillOps } from "../services/interface/quill.interface";
 import ExtendedBaseEntity from "./ExtendedBaseEntity";
-import Users from "./Users.entity";
 import PollsOptions from "./PollsOptions.entity";
 import PollsOptionsUsers from "./PollsOptionsUsers.entity";
-
-export interface QuillOps {
-    insert: {
-        mention: {
-            id: number
-            accountUserId?: number,
-            value: string,
-            index: number,
-            denotationChar: string
-        }
-    } | string
-}
-
+import Users from "./Users.entity";
 @Entity()
 export default class Polls extends ExtendedBaseEntity<Polls> {
     @PrimaryGeneratedColumn({ type: "bigint", unsigned: true })
@@ -54,11 +42,11 @@ export default class Polls extends ExtendedBaseEntity<Polls> {
     createdByUser!: Users[]
 
     @OneToMany(() => PollsOptions, (pollsOptions) => pollsOptions.poll)
-    pollsOptions?: PollsOptions[]  
+    pollsOptions?: PollsOptions[]
 
     @OneToMany(() => PollsOptionsUsers, (pollsOptionsUsers) => pollsOptionsUsers.poll)
-    pollsOptionsUsers?: PollsOptionsUsers[]  
-    
+    pollsOptionsUsers?: PollsOptionsUsers[]
+
     @CreateDateColumn({
         type: "datetime",
         name: "created_at"

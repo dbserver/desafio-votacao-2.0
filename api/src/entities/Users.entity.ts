@@ -1,12 +1,9 @@
-import { Column, CreateDateColumn, Entity, Generated, Index, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, Generated, Index, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from "typeorm";
+import { UserPermission } from "../services/enum/user.enum";
 import ExtendedBaseEntity from "./ExtendedBaseEntity";
 import Polls from "./Polls.entity";
 import PollsOptionsUsers from "./PollsOptionsUsers.entity";
 
-enum UserPermission {
-    ADMIN = "ADMIN",
-    DEFAULT = "DEFAULT"
-}
 @Entity()
 export default class Users extends ExtendedBaseEntity<Users> {
     @PrimaryGeneratedColumn({ type: "int", unsigned: true })
@@ -26,11 +23,11 @@ export default class Users extends ExtendedBaseEntity<Users> {
     password!: string;
 
     @Column("varchar", { length: 255, nullable: false })
-    @Index({ unique: true })
+    @Index('IDX_U_EMAIL', { unique: true })
     email!: string
 
     @Column("varchar", { length: 14, nullable: false })
-    @Index({ unique: true })
+    @Index('IDX_U_DOCUMENT', { unique: true })
     document!: string
 
     @Column("varchar", { length: 10, nullable: false })
@@ -40,7 +37,7 @@ export default class Users extends ExtendedBaseEntity<Users> {
     polls?: Polls[]
 
     @OneToMany(() => PollsOptionsUsers, (pollsOptionsUsers) => pollsOptionsUsers.user)
-    pollsOptionsUsers?: PollsOptionsUsers[]    
+    pollsOptionsUsers?: PollsOptionsUsers[]
 
     @CreateDateColumn({
         type: "datetime",
