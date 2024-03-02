@@ -1,0 +1,40 @@
+version: '2'
+name: votacao
+services:
+  mysql:
+    image: mysql:8
+    build:
+      context: .
+      dockerfile: mysql.Dockerfile
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: a1d2m3in
+      MYSQL_DATABASE: votacao
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: a1d2m3in
+    volumes:
+      - ./data:/var/lib/mysql
+    networks:
+      - votacao
+
+  node:
+    container_name: node
+    depends_on:
+      - mysql
+    build: 
+      context: './'
+      dockerfile: node.Dockerfile
+    environment:
+      DB_HOST: mysql
+    volumes: 
+      - .:/usr/src/app
+    ports:
+      - 8081:8081
+    networks:
+      - votacao
+
+networks:
+  votacao:
+    name: votacao
+    driver: bridge
