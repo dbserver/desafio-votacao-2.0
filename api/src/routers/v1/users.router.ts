@@ -11,7 +11,6 @@ userRouter.post('/',
     Authentication.handleAuthentication,
     async (req: express.Request, res: express.Response, next: express.NextFunction) => {
         try {
-            console.log('aaaaaaaaaaaaaaaaaa')
             const schema = plainToInstance(UserSchema, req.body.user)
             await validateAndThrow(schema)
             next(schema)
