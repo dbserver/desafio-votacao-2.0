@@ -44,3 +44,16 @@ export class UserSchema {
     @IsEnum(UserPermission)
     permission!: string
 }
+
+export class UserAuthSchema {
+    @IsNotEmpty()
+    @Length(10, 14)
+    @IsString()
+    @Validate(Cpf)
+    document!: string
+
+    @IsNotEmpty()
+    @Length(8, 24)
+    @IsString()
+    password!: string
+}

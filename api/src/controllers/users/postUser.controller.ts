@@ -5,7 +5,7 @@ import Users from "../../entities/Users.entity";
 import { plainToInstance } from "class-transformer";
 import { APIError } from "../../@types/types";
 
-const errorPrefix = 'USR'
+const errorPrefix = 'USR847'
 
 export async function createUser(schema: UserSchema, manager = Database.getManager()) {
     schema.password = crypto.createHash('sha256').update(schema.password).digest('hex')
