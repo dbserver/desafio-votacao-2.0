@@ -36,7 +36,7 @@ export async function postLogin(document: string, password: string) {
     },
         process.env.SECRETJWT!
         , {
-            expiresIn: 300
+            expiresIn: 30000
         }
     )
 

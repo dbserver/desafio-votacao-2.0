@@ -4,6 +4,7 @@ import { validatorCpf } from '../utils/validators/regexCpf.validator';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from '../services/auth/auth.service';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,8 @@ export class LoginComponent implements OnInit {
   
   constructor(
     private formBuilder: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) { }
 
   loginForm: FormGroup = this.formBuilder.group({})
@@ -40,13 +42,15 @@ export class LoginComponent implements OnInit {
         await Swal.fire({
           text: text,
           title: 'LOGIN',
-          icon: 'error'
+          icon: 'error',
+          heightAuto: false
         })
       }
+      return false
     })
 
     if (!logou) return
-    // this.router.navigate(['home'])
+    this.router.navigate(['poll'])
   }
 
 }

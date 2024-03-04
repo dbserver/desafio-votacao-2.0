@@ -35,7 +35,7 @@ export default abstract class Authentication {
             }
 
             if (typeof decoded === 'object') {
-                req.userId = decoded.userId
+                req.userId = decoded.id
             }
         })
     }

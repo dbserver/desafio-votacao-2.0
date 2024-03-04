@@ -2,29 +2,40 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { lastValueFrom } from 'rxjs';
-import { Auth } from 'src/app/interfaces/auth.interface';
+import { Auth, UserAuth } from 'src/app/utils/interface/auth.interface';
 import { environment } from 'src/environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  token = ''
-  jwt: any
+  private token = ''
+  private currentUser: UserAuth | null = null
 
   constructor(
     private http: HttpClient,
     private cookieService: CookieService
   ) { }
+
   setTokenJwtCookie(token: string) {
     this.cookieService.set('votacao_token', token)
     this.token = token
   }
 
-  getTokenJwtCookie() {
+  setCurrentUser(user: UserAuth) {
+    this.currentUser = user
+  }
+
+  async getTokenJwtCookie() {
     const token = this.cookieService.get('votacao_token')
     this.token = token
     return token
+  }
+
+  async logout() {
+    this.cookieService.delete('votacao_token')
+    this.token = ''
+    this.currentUser = null
   }
 
   async login(document: string, password: string) {

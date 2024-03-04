@@ -5,13 +5,22 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './login/login.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
+import { InterceptorHandler } from './services/interceptor/interceptor.interceptor';
+import { HomeComponent } from './home/home.component';
+import { NewUserComponent } from './home/new-user/new-user.component';
+import { MenuComponent } from './home/menu/menu.component';
+import { PollComponent } from './home/poll/poll.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    HomeComponent,
+    NewUserComponent,
+    MenuComponent,
+    PollComponent
   ],
   imports: [
     BrowserModule,
@@ -22,7 +31,12 @@ import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
     NgxMaskDirective
   ],
   providers: [
-    provideNgxMask()
+    provideNgxMask(),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: InterceptorHandler,
+      multi: true,
+   }
   ],
   bootstrap: [AppComponent]
 })
