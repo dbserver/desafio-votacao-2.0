@@ -18,6 +18,6 @@ export class APIError extends Error {
         public statusCode?: number,
         public data?: any
     ) {
-        super(message);
+        super(message)
     }
 }

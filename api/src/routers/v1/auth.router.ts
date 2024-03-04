@@ -13,7 +13,7 @@ authRouter.post('/',
             await validateAndThrow(schema)
             next(schema)
         } catch (error) {
-            res.status(422).json(error)
+            next(error)
         }
     },
     async (schema: UserAuthSchema, _req: express.Request, res: express.Response, next: express.NextFunction) => {

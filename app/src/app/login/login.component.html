@@ -1,0 +1,12 @@
+<div class="login" >
+  <div [formGroup]="loginForm" class="login__container" *ngIf="loginForm">
+    <img src="assets/voto.png" alt="">
+
+    <input type="text" class="form-control" placeholder="Cpf" id="loginDocument" formControlName="document" [mask]="mask"> 
+
+    <input type="password" class="form-control" placeholder="Senha" id="loginPassword" formControlName="password">
+
+    <button type="button" class="btn btn-primary" (click)="validarLogin()" [disabled]="loginForm.invalid">Entrar</button>
+  </div>
+
+</div>

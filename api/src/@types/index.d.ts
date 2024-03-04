@@ -22,4 +22,10 @@ declare global {
         exp?: number;
         jti?: string;
     }
+
+    interface Error {
+        status?: string;
+        statusDetail?: string;
+        statusCode?: number;
+    }
 }
