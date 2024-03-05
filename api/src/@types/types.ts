@@ -1,3 +1,5 @@
+import logger from "../services/logger/logger";
+
 export class APIError extends Error {
     /**
         @message messagem amigavel para usuario final 
@@ -19,5 +21,15 @@ export class APIError extends Error {
         public data?: any
     ) {
         super(message)
+        logger.error({
+            error: {
+                message,
+                code,
+                detail,
+                statusCode,
+                data
+            },
+            date: new Date()
+        })
     }
 }
