@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { PollService } from 'src/app/services/poll/poll.service';
@@ -23,6 +24,7 @@ export class PollComponent implements OnInit {
 
   constructor(
     private pollService: PollService,
+    private  router: Router,
     private authService: AuthService
   ) {
 
@@ -61,13 +63,18 @@ export class PollComponent implements OnInit {
     else return 'btn btn-secondary' + ' disabled'
   }
 
-  async resetPoll(id: number, response?: boolean) {
+  async resetPoll(id: number) {
     const index = this.polls.findIndex(v => v.id === id)
 
     this.polls[index] = {
       ...this.polls[index],
       expired: moment(this.polls[index].expiresAt).isBefore(moment().utc(true)),
     }
+  }
+
+
+  async report(poll: PollComplete) {
+    this.router.navigate(['poll', poll.id])
   }
 
   async responsePolls(poll: PollComplete, response: boolean) {

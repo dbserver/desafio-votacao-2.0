@@ -1,5 +1,6 @@
 import { DataSource, QueryRunner } from 'typeorm';
 import dataSource from './../../../ormconfig';
+import logger from '../logger/logger';
 
 export default abstract class Database {
     static connection: DataSource
@@ -35,12 +36,12 @@ export default abstract class Database {
 
     static async startTransaction() {
         await this.queryRunner.startTransaction()
-        console.log('startTransaction')
+        logger.log('info', "startTransaction")
     }
 
     static async rollbackTransaction() {
         await this.queryRunner.rollbackTransaction()
-        console.log('rollbackTransaction')
+        logger.log('info', "rollbackTransaction")
     }
 
     static async destroy() {

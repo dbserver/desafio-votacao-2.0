@@ -1,0 +1,21 @@
+<div class="poll-report" *ngIf='poll'>
+
+    <div class="poll-report__content">
+        <h3> {{ poll.text }}</h3>
+
+        <div class="status">
+            <label> Status: </label>
+            <label [ngStyle]="{ 'color' : isExpired ? 'red' : 'green'}"> {{ isExpired ? 'Expirada!' : 'Em aberto!' }} </label> 
+        </div>
+                   
+        
+        <canvas baseChart
+            [labels]="doughnutChartLabels"
+            [datasets]="doughnutChartDatasets"
+            [options]="doughnutChartOptions"
+            [legend]="true"
+            [type]="'doughnut'">
+        </canvas>
+    </div>
+    <button class="btn btn-link" (click)="goPoll()"> voltar </button>
+</div>

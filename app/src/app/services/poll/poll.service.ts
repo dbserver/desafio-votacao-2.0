@@ -27,6 +27,12 @@ export class PollService {
       .get<Poll[]>(`${environment.api}/v1/polls${querySkip}`))
   }
 
+  async getPoll(id: number) {    
+    return await lastValueFrom(this.http
+      .get<Poll>(`${environment.api}/v1/polls/${id}`))
+  }
+
+
   async createPollOptionUser(pollId: number, optionsId: number) {
     return await lastValueFrom(this.http
       .post<PollOptionUser>(`${environment.api}/v1/polls/${pollId}/options/${optionsId}`, {}))

@@ -12,7 +12,8 @@ import { HomeComponent } from './home/home.component';
 import { NewUserComponent } from './home/new-user/new-user.component';
 import { MenuComponent } from './home/menu/menu.component';
 import { PollComponent } from './home/poll/poll.component';
-
+import { PollReportComponent } from './home/poll/poll-report/poll-report.component';
+import {  NgChartsModule } from 'ng2-charts';
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,7 +21,8 @@ import { PollComponent } from './home/poll/poll.component';
     HomeComponent,
     NewUserComponent,
     MenuComponent,
-    PollComponent
+    PollComponent,
+    PollReportComponent
   ],
   imports: [
     BrowserModule,
@@ -28,7 +30,8 @@ import { PollComponent } from './home/poll/poll.component';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    NgxMaskDirective
+    NgxMaskDirective,
+    NgChartsModule
   ],
   providers: [
     provideNgxMask(),

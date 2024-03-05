@@ -10,7 +10,7 @@
                 <button [ngClass]="setClassBnt(poll, true)" (click)="responsePolls(poll, true)">sim</button>
                 <button [ngClass]="setClassBnt(poll, false)" (click)="responsePolls(poll, false)">não</button>
             </div>
-            <button *ngIf="isAdmin" class="btn btn-link btnViewMore">Relatorio</button>
+            <button *ngIf="isAdmin" class="btn btn-link btnViewMore" (click)="report(poll)">Relatorio</button>
         </div>
         <button *ngIf="viewMore" type="button" (click)="getPolls()" class="btn btn-link btnViewMore">Ver mais</button>
 </div>

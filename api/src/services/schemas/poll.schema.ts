@@ -1,4 +1,4 @@
-import { IsArray, IsDate, IsNotEmpty, IsOptional, Length } from "class-validator"
+import { IsArray, IsDate, IsDateString, IsNotEmpty, IsOptional, Length } from "class-validator"
 import { QuillOps } from "../interface/quill.interface"
 
 export class PollSchema {
@@ -10,7 +10,7 @@ export class PollSchema {
     @IsOptional()
     ops?: QuillOps[]
 
-    @IsDate()
+    @IsDateString()
     @IsOptional()
     expiresAt?: Date
 }
