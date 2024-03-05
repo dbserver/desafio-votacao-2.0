@@ -1,8 +1,9 @@
-import { In } from "typeorm";
+import { FindOptionsWhere, In, LessThan, MoreThan, MoreThanOrEqual } from "typeorm";
 import Polls from "../../entities/Polls.entity";
 import PollsOptionsUsers from "../../entities/PollsOptionsUsers.entity";
 import Database from "../../services/dataBase/database";
 import { UserPermission } from "../../services/enum/user.enum";
+import moment from "moment";
 
 /**
     Get polls in database
@@ -13,17 +14,22 @@ import { UserPermission } from "../../services/enum/user.enum";
     @returns { Promise<Polls | Polls[] | null> }
    */
 export async function getPolls(userId: number, permission: UserPermission, page = 0, id?: number, manager = Database.getManager()) {
-    const conditions = manager.createQueryBuilder(Polls, "poll")
-        .leftJoinAndSelect('poll.pollsOptions', 'pollsOptions')
+    const where: FindOptionsWhere<Polls> = {
+        expiresAt: permission === UserPermission.DEFAULT ? MoreThanOrEqual(moment().utc(true).toDate()) : undefined,
+        id: id ? id : undefined
+    }
 
-    if (permission === UserPermission.DEFAULT) conditions.andWhere(`poll.expiresAt <= '${new Date().toISOString()}'`)
-    if (id) conditions.andWhere(`poll.id = ${id}`)
-
-    conditions.orderBy('poll.createdAt', 'DESC')
-    conditions.take(10)
-    conditions.skip(page * 10)
-
-    const polls = await conditions.getMany()
+    const polls = await manager.find(Polls, {
+        where,
+        order: {
+            createdAt: 'DESC'
+        },
+        take: 10,
+        skip: page * 10,
+        relations: {
+            pollsOptions: true
+        }
+    })
 
     const pollsOptionsUsers = await manager.find(PollsOptionsUsers, {
         where: {
