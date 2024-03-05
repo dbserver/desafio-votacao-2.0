@@ -1,8 +1,12 @@
 nav
     padding: 10px
-    position: fixed
     width: 100%
+
+    @media screen and (min-width: '568px')
+        position: fixed
+        top: 0
     @media screen and (max-width: '568px')
+        position: fixed
         bottom: 0
     ul
         width: 100%

@@ -4,10 +4,13 @@ import { getUser } from "../../controllers/users/getUser.controller";
 import { createUser } from "../../controllers/users/postUser.controller";
 import { UserSchema } from "../../services/schemas/users.schema";
 import { validateAndThrow } from "../../services/schemas/validateAndThrow";
+import Authentication from "../../services/authentication/authentication";
+import { UserPermission } from "../../services/enum/user.enum";
 
 const userRouter = express.Router({ mergeParams: true })
 
 userRouter.post('/',
+    Authentication.handlePermission(UserPermission.ADMIN),
     async (req: express.Request, res: express.Response, next: express.NextFunction) => {
         try {
             const schema = plainToInstance(UserSchema, req.body.user)

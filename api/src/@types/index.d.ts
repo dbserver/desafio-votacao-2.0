@@ -1,4 +1,5 @@
 import express from "express";
+import { UserPermission } from "../services/enum/user.enum";
 
 declare global {
     interface Error {
@@ -11,6 +12,7 @@ declare global {
         interface Request {
             response?: express.Response
             userId: number
+            permission: UserPermission
         }
     }
 
