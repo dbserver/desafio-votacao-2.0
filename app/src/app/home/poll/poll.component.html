@@ -2,55 +2,15 @@
     <div class="poll__container">
         <h3>Votações</h3>
 
-        <div class="item">
+        <div class="item" [ngStyle]="{ 'background-color': poll.expired ? 'lightgray' : 'ligthgray' }" *ngFor='let poll of polls'>
             <div class="title">
-                <p>Você compraria um tesla?</p>
+                <p> {{ poll.text }}</p>
             </div>
             <div class="buttons">
-                <button class="btn btn-primary">sim</button>
-                <button class="btn btn-danger">não</button>
+                <button [ngClass]="setClassBnt(poll, true)" (click)="responsePolls(poll, true)">sim</button>
+                <button [ngClass]="setClassBnt(poll, false)" (click)="responsePolls(poll, false)">não</button>
             </div>
+            <button *ngIf="isAdmin" class="btn btn-link btnViewMore">Relatorio</button>
         </div>
-
-        <div class="item">
-            <div class="title">
-                <p>Você compraria um tesla?</p>
-            </div>
-            <div class="buttons">
-                <button class="btn btn-primary">sim</button>
-                <button class="btn btn-danger">não</button>
-            </div>
-        </div>
-
-
-        <div class="item">
-            <div class="title">
-                <p>Você compraria um tesla?</p>
-            </div>
-            <div class="buttons">
-                <button class="btn btn-primary">sim</button>
-                <button class="btn btn-danger">não</button>
-            </div>
-        </div>
-
-        <div class="item">
-            <div class="title">
-                <p>Você compraria um tesla?</p>
-            </div>
-            <div class="buttons">
-                <button class="btn btn-primary">sim</button>
-                <button class="btn btn-danger">não</button>
-            </div>
-        </div>
-
-        <div class="item">
-            <div class="title">
-                <p>Você compraria um tesla?</p>
-            </div>
-            <div class="buttons">
-                <button class="btn btn-primary">sim</button>
-                <button class="btn btn-danger">não</button>
-            </div>
-        </div>
-    </div>
+        <button *ngIf="viewMore" type="button" (click)="getPolls()" class="btn btn-link btnViewMore">Ver mais</button>
 </div>

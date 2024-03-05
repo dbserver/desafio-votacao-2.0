@@ -42,7 +42,7 @@ export default class Polls extends ExtendedBaseEntity<Polls> {
         onDelete: "CASCADE",
     })
     @JoinColumn({ name: "createdByUserId", referencedColumnName: "id" })
-    createdByUser!: Users[]
+    createdByUser!: Users
 
     @OneToMany(() => PollsOptions, (pollsOptions) => pollsOptions.poll)
     pollsOptions?: PollsOptions[]

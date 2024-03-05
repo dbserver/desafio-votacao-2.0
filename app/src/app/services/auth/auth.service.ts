@@ -26,6 +26,10 @@ export class AuthService {
     this.currentUser = user
   }
 
+  getCurrentUser() {
+    return this.currentUser
+  }
+
   async getTokenJwtCookie() {
     const token = this.cookieService.get('votacao_token')
     this.token = token
