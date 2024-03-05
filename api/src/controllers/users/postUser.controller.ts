@@ -7,6 +7,13 @@ import { APIError } from "../../@types/types";
 
 const errorPrefix = 'USR847'
 
+/**
+    Save user in database
+    @param {UserSchema} schema - Schema user.
+    @param {EntityManager} manager - Entity manager working only with this query runner.
+    @returns { Promise<Users> }
+   */
+
 export async function createUser(schema: UserSchema, manager = Database.getManager()) {
     schema.password = crypto.createHash('sha256').update(schema.password).digest('hex')
     schema.document = schema.document.replace(/[^0-9]/g, '')

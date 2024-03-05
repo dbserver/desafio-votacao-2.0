@@ -4,6 +4,9 @@ import ExtendedBaseEntity from "./ExtendedBaseEntity";
 import Polls from "./Polls.entity";
 import PollsOptionsUsers from "./PollsOptionsUsers.entity";
 
+/**
+    Table of users
+   */
 @Entity()
 export default class Users extends ExtendedBaseEntity<Users> {
     @PrimaryGeneratedColumn({ type: "int", unsigned: true })

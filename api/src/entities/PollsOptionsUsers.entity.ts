@@ -4,6 +4,9 @@ import Users from "./Users.entity";
 import PollsOptions from "./PollsOptions.entity";
 import Polls from "./Polls.entity";
 
+/**
+    Table of polls_options_users
+   */
 @Entity()
 @Unique('pollOption', ['pollId', 'userId'])
 export default class PollsOptionsUsers extends ExtendedBaseEntity<PollsOptionsUsers> {

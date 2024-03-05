@@ -6,6 +6,15 @@ import validator from "validator";
 
 const errorPrefix = 'AUT537'
 
+/**
+    Validate user authentication 
+    @param {string} document - CPF user.
+    @param {string} password - Password user.
+    @returns { Promise<{
+        auth: boolean
+        token: string
+    }> }
+   */
 export async function postLogin(document: string, password: string) {
     const errors = [];
     if (validator.isEmpty(document)) errors.push('email')

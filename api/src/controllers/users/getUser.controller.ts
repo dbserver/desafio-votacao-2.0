@@ -1,10 +1,17 @@
 import { APIError } from "../../@types/types"
 import Users from "../../entities/Users.entity"
+import Database from "../../services/dataBase/database"
 
 const errorPrefix = 'USR781'
 
-export async function getUser(id: number) {
-    const user = await Users.findOne({
+/**
+    Get user in database
+    @param {number} id - id user.
+    @param {EntityManager} manager - Entity manager working only with this query runner.
+    @returns { Promise<Users> }
+   */
+export async function getUser(id: number, manager = Database.getManager()) {
+    const user = await manager.findOne(Users,{
         where: {
             id
         }

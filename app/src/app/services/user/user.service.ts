@@ -16,7 +16,7 @@ export class UserService {
 
   async getCurrentUser() {
     return await lastValueFrom(this.http
-      .get<UserAuth>(`${environment.api}/v1/users/`))
+      .get<UserAuth>(`${environment.api}/v1/users/current`))
   }
 
   async postUser(dto: UserDto) {

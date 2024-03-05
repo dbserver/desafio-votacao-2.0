@@ -19,7 +19,7 @@ export class InterceptorHandler implements HttpInterceptor {
 
         const token = await authService.getTokenJwtCookie()
         const dupReq = req.clone({
-            headers: req.headers.set('x-access-token', token ? token : '')
+            headers: req.headers.set('Authorization', `Bearer ${token}`)
         })
 
         return await lastValueFrom(next.handle(dupReq).pipe(

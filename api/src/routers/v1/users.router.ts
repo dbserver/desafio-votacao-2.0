@@ -31,7 +31,7 @@ userRouter.post('/',
     }
 )
 
-userRouter.get('/',
+userRouter.get('/current',
     async (req: express.Request, res: express.Response, next: express.NextFunction) => {
         try {
             const result = await getUser(req.userId!)

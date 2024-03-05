@@ -7,8 +7,15 @@ import Users from "../../entities/Users.entity";
 const errorPrefix = 'ATH787'
 
 export default abstract class Authentication {
-    static async verifyIsAuthenticated(req: express.Request, res: express.Response) {
-        const token = req.headers['x-access-token'] as string
+    /**
+    Validates whether the request is authenticated with jwt
+    @param {express.Request} req - Request.
+    @param {express.Response} res - Response of request.
+    @returns { Promise<void> }
+   */
+    static async verifyIsAuthenticated(req: express.Request, _res: express.Response) {
+        const authHeader = req.headers['authorization']
+        const token = authHeader && authHeader.split(' ')[1] || ''
 
         verify(token, process.env.SECRETJWT!, (err, decoded) => {
             if (err?.message === 'jwt expired') {
@@ -27,7 +34,15 @@ export default abstract class Authentication {
                     'invalid token.',
                     401,
                 )
-            } else if (err) {
+            } else if (err?.message === 'jwt must be provided') {
+                throw new APIError(
+                    'jwt must be provided.',
+                    `${errorPrefix}08`,
+                    'jwt must be provided.',
+                    401,
+                )
+            }
+            else if (err) {
                 throw new APIError(
                     `unexpected error.`,
                     `${errorPrefix}03`,
@@ -42,6 +57,13 @@ export default abstract class Authentication {
         })
     }
 
+    /**
+    handle authenticated 
+    @param {express.Request} req - Request.
+    @param {express.Response} res - Response of request.
+    @param {express.NextFunction} next - Next of request.
+    @returns { Promise<void> }
+   */
     static async handleAuthentication(req: express.Request, res: express.Response, next: express.NextFunction) {
         try {
             await Authentication.verifyIsAuthenticated(req, res)
@@ -65,6 +87,13 @@ export default abstract class Authentication {
         }
     }
 
+    /**
+    Validates whether the user has permission to access the route.
+    @param {express.Request} req - Request.
+    @param {express.Response} res - Response of request.
+    @param {express.NextFunction} next - Next of request.
+    @returns { Promise<void> }
+   */
     static async verifyPermission(req: express.Request, _res: express.Response, permission: UserPermission) {
         const user = await Users.findOne({
             where: {
@@ -83,6 +112,11 @@ export default abstract class Authentication {
         req.permission = user.permission
     }
 
+    /**
+    handle permission validates whether the user has permission to access the route.
+    @param {UserPermission} permission - Minimum type of permission user .
+    @returns { Promise<void> }
+   */
     static handlePermission(permission: UserPermission) {
         return async (req: express.Request, res: express.Response, next: express.NextFunction) => {
             try {
