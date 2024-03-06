@@ -17,7 +17,7 @@ import moment from "moment";
 export async function getPolls(userId: number, permission: UserPermission, page = 0, category?: string, id?: number, manager = Database.getManager()) {
     const where: FindOptionsWhere<Polls> = {
         expiresAt: permission === UserPermission.DEFAULT ? MoreThanOrEqual(moment().utc(true).toDate()) : undefined,
-        id: id ? id : undefined,
+        id: id || id === 0 ? id : undefined,
         category: category ? category : undefined
     }
 
