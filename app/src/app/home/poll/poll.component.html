@@ -2,6 +2,20 @@
     <div class="poll__container">
         <h3>Votações</h3>
 
+        <div class="input-group mb-3 headerBtns">
+            <div>
+                <button *ngIf="isAdmin" type="button" class="btn btn-success" (click)='newPoll()'>Criar votação</button>
+            </div>
+
+            <select class="form-select" (change)="setCategory($event)">
+                <option value="">Todas</option>
+                <option value="trabalho">Trabalho</option>
+                <option value="familia">Familia</option>
+                <option value="academia">Academia</option>
+                <option value="outros">Outros</option>
+              </select>
+        </div>
+
         <div class="item" [ngStyle]="{ 'background-color': poll.expired ? 'lightgray' : 'ligthgray' }" *ngFor='let poll of polls'>
             <div class="title">
                 <p> {{ poll.text }}</p>

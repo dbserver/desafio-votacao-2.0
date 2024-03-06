@@ -1,3 +1,4 @@
+import { DeltaOperation } from "quill"
 import { UserAuth } from "./auth.interface"
 
 export interface PollDto {
@@ -14,7 +15,7 @@ export interface PollComplete extends Poll{
 export interface Poll {
     id: number
     text: string
-    ops?: []
+    ops?: DeltaOperation[]
     answers: number
     expiresAt: Date
     createdByUserId: number

@@ -18,13 +18,14 @@ export class PollComponent implements OnInit {
   polls: PollComplete[] = []
   page = -1
   viewMore = true
-  currentUser: UserAuth | null = null 
+  currentUser: UserAuth | null = null
 
   isAdmin = false
+  category = ''
 
   constructor(
     private pollService: PollService,
-    private  router: Router,
+    private router: Router,
     private authService: AuthService
   ) {
 
@@ -36,13 +37,24 @@ export class PollComponent implements OnInit {
     await this.getPolls()
   }
 
-  async getPolls() {
+  async setCategory(event: Event) {
+    const target = event.target as HTMLButtonElement
+    this.category = target.value ?? undefined
+    await this.getPolls(true)
+  }
+
+
+  async getPolls(reset = false) {
     this.page++
+    if(reset) {
+      this.polls = []
+      this.page = 0
+    }
 
-    await this.pollService.getPolls(this.page).then(result => {
+    await this.pollService.getPolls(this.page, this.category ? this.category : undefined).then(result => {
       this.viewMore = result.length === 10
-      result.forEach(v => {
 
+      result.forEach(v => {
         const option = v.pollsOptionsUsers?.length ? v.pollsOptionsUsers[0].pollOption?.option : ''
 
         this.polls.push({
@@ -77,12 +89,16 @@ export class PollComponent implements OnInit {
     this.router.navigate(['poll', poll.id])
   }
 
+  async newPoll() {
+    this.router.navigate(['poll', 'new'])
+  }
+
   async responsePolls(poll: PollComplete, response: boolean) {
     const pollOption = poll.pollsOptions?.find(value => (value.option === '1') === response)
     if (!pollOption) return
     await this.pollService.createPollOptionUser(poll.id, pollOption?.id).then(async v => {
       if (v) {
-        poll.pollsOptionsUsers = [v] 
+        poll.pollsOptionsUsers = [v]
         poll.option = response ? '1' : '0'
         await Swal.fire({
           text: 'Voto realizado!',

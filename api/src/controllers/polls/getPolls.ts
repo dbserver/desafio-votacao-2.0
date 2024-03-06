@@ -13,10 +13,11 @@ import moment from "moment";
     @param {EntityManager} manager - Entity manager working only with this query runner.
     @returns { Promise<Polls | Polls[] | null> }
    */
-export async function getPolls(userId: number, permission: UserPermission, page = 0, id?: number, manager = Database.getManager()) {
+export async function getPolls(userId: number, permission: UserPermission, page = 0, category?: string, id?: number, manager = Database.getManager()) {
     const where: FindOptionsWhere<Polls> = {
         expiresAt: permission === UserPermission.DEFAULT ? MoreThanOrEqual(moment().utc(true).toDate()) : undefined,
-        id: id ? id : undefined
+        id: id ? id : undefined,
+        category: category ? category : undefined
     }
 
     const polls = await manager.find(Polls, {

@@ -1,13 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
-import { authGuard } from './services/guards/auth.guard';
 import { NewUserComponent } from './home/new-user/new-user.component';
-import { PollComponent } from './home/poll/poll.component';
+import { NewPollComponent } from './home/poll/new-poll/new-poll.component';
 import { PollReportComponent } from './home/poll/poll-report/poll-report.component';
-import { PollResolver } from './services/resolvers/pollResolver.resolver';
+import { PollComponent } from './home/poll/poll.component';
+import { LoginComponent } from './login/login.component';
 import { adminGuard } from './services/guards/admin.guard';
+import { authGuard } from './services/guards/auth.guard';
+import { PollResolver } from './services/resolvers/pollResolver.resolver';
 
 const routes: Routes = [
   {
@@ -20,13 +21,17 @@ const routes: Routes = [
     component: HomeComponent,
     children: [
       {
-        path: 'new-user',
+        path: 'user/new',
         canActivate: [adminGuard],
         component: NewUserComponent
       },
       {
         path: 'poll',
         component: PollComponent
+      },
+      {
+        path: 'poll/new',
+        component: NewPollComponent
       },
       {
         path: 'poll/:pollId',

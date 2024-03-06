@@ -37,7 +37,9 @@ pollRouter.get('/',
     async (req: express.Request, res: express.Response, next: express.NextFunction) => {
         try {
             const page = req.query.page ? parseInt(req.query.page.toString()) : 0
-            const result = await getPolls(req.userId, req.permission, page)
+            const category = req.query.category  as string
+
+            const result = await getPolls(req.userId, req.permission, page, category)
             res.status(200).json(result)
         }
         catch (error) {
@@ -51,7 +53,7 @@ pollRouter.get('/:id',
     Authentication.handlePermission(UserPermission.DEFAULT),
     async (req: express.Request, res: express.Response, next: express.NextFunction) => {
         try {
-            const result = await getPolls(req.userId, req.permission, 0, +req.params.id!)
+            const result = await getPolls(req.userId, req.permission, 0, undefined, +req.params.id!)
             res.status(200).json(result)
         }
         catch (error) {

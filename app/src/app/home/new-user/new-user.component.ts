@@ -46,7 +46,7 @@ export class NewUserComponent {
     await this.userService.postUser(user).then(async v => {
       await Swal.fire({
         text: "Usuario criado com sucesso",
-        title: 'Uusuario',
+        title: 'Usuario',
         icon: 'success',
         heightAuto: false
       })

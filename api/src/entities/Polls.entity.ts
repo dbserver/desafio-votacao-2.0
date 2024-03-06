@@ -19,6 +19,13 @@ export default class Polls extends ExtendedBaseEntity<Polls> {
     })
     text!: string
 
+    @Column({
+        type: 'varchar',
+        length: 250,
+        nullable: true
+    })
+    category?: string
+
     @Column("json", { nullable: true })
     ops?: QuillOps[]
 

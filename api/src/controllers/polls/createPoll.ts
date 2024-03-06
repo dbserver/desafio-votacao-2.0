@@ -3,6 +3,9 @@ import Polls from "../../entities/Polls.entity";
 import PollsOptions from "../../entities/PollsOptions.entity";
 import Database from "../../services/dataBase/database";
 import { PollSchema } from "../../services/schemas/poll.schema";
+import { APIError } from "../../@types/types";
+
+const errorPrefix = 'POL604'
 
 /**
     Save poll in database
@@ -16,6 +19,10 @@ export async function createPoll(
     userId: number,
     manager = Database.getManager()
 ) {
+    const time = moment().utc(true)
+    
+    if (time.isAfter(schema.expiresAt)) throw new APIError('Expiration date already expired!', errorPrefix + '01', 'Expiration date already expired!', 422)
+
     schema.expiresAt = schema.expiresAt ? schema.expiresAt : moment().utc(true).add(1, 'minutes').toDate()
 
     const create = Polls.create({
