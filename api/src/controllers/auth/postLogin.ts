@@ -33,10 +33,9 @@ export async function postLogin(document: string, password: string, manager = Da
     document = document.replace(/[^0-9]/g, '')
 
     const user = await manager.findOne(Users, {
-        select: ['password', 'document'],
         where: {
             document,
-            
+            password
         }
     })
 
