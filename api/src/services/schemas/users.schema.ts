@@ -42,7 +42,7 @@ export class UserSchema {
 
     @IsNotEmpty()
     @IsEnum(UserPermission)
-    permission!: string
+    permission!: UserPermission
 }
 
 export class UserAuthSchema {
