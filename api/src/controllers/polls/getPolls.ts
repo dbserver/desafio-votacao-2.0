@@ -10,6 +10,7 @@ import moment from "moment";
     @param {UserPermission} permission - Type of permission user.
     @param {number} page - Pagination.
     @param {number} id - Poll id.
+    @param {number} category - Category poll.
     @param {EntityManager} manager - Entity manager working only with this query runner.
     @returns { Promise<Polls | Polls[] | null> }
    */

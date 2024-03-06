@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import { APIError } from "../../@types/types";
 import Users from "../../entities/Users.entity";
 import validator from "validator";
+import Database from "../../services/dataBase/database";
 
 const errorPrefix = 'AUT537'
 
@@ -10,12 +11,13 @@ const errorPrefix = 'AUT537'
     Validate user authentication 
     @param {string} document - CPF user.
     @param {string} password - Password user.
+    @param {EntityManager} manager - Entity manager working only with this query runner.
     @returns { Promise<{
         auth: boolean
         token: string
     }> }
    */
-export async function postLogin(document: string, password: string) {
+export async function postLogin(document: string, password: string, manager = Database.getManager()) {
     const errors = [];
     if (validator.isEmpty(document)) errors.push('email')
     if (validator.isEmpty(password)) errors.push('password')
@@ -29,7 +31,7 @@ export async function postLogin(document: string, password: string) {
 
     password = crypto.createHash('sha256').update(password).digest('hex')
 
-    const user = await Users.findOne({
+    const user = await manager.findOne(Users, {
         where: {
             document,
             password

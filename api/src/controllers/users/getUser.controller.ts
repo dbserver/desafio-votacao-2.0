@@ -6,7 +6,7 @@ const errorPrefix = 'USR781'
 
 /**
     Get user in database
-    @param {number} id - id user.
+    @param {number} id - Id user.
     @param {EntityManager} manager - Entity manager working only with this query runner.
     @returns { Promise<Users> }
    */

@@ -31,6 +31,7 @@ const routes: Routes = [
       },
       {
         path: 'poll/new',
+        canActivate: [adminGuard],
         component: NewPollComponent
       },
       {
@@ -43,7 +44,7 @@ const routes: Routes = [
       },
       {
         path: '**',
-        redirectTo: 'login'
+        redirectTo: 'poll'
       },
     ]
   },

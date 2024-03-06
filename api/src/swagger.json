@@ -15,6 +15,64 @@
         }
     ],
     "paths": {
+        "/auth": {
+            "post": {
+                "summary": "User authentication",
+                "description": "user authentication jwt",
+                "tags": ["auth"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserAuthSchema"     
+                            },
+                            "examples": {
+                                "user1":{
+                                    "value": {
+                                        "user": {
+                                            "password": "123456789",
+                                            "document": "47327205870"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref":"#/components/schemas/APIError"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref":"#/components/schemas/Authentication"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref":"#/components/schemas/APIError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/users": {
             "post": {
                 "security": [{
@@ -121,23 +179,27 @@
                 }
             }
         },
-        "/auth": {
-            "post": {
-                "summary": "User authentication",
-                "description": "user authentication jwt",
-                "tags": ["auth"],
+        "/polls": {
+            "post" : {
+                "security": [{
+                    "x-access-token": []
+                }],
+                "summary": "Create Poll",
+                "description": "Create Poll.",
+                "tags": ["Polls"],
                 "requestBody": {
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/UserAuthSchema"     
+                                "$ref": "#/components/schemas/PollSchema"     
                             },
                             "examples": {
-                                "user1":{
+                                "poll1":{
                                     "value": {
-                                        "user": {
-                                            "password": "12345678",
-                                            "document": "804.608.240-66"
+                                        "poll": {
+                                            "text": "teste1",
+                                            "category": "outros",
+                                            "expiresAt": "2024-03-06T20:58:06-03:00"
                                         }
                                     }
                                 }
@@ -145,6 +207,70 @@
                         }
                     }
                 },
+                "responses": {
+                    "404": {
+                        "description": "Not found!",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref":"#/components/schemas/APIError"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref":"#/components/schemas/APIError"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref":"#/components/schemas/Poll"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "conflict",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref":"#/components/schemas/APIError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "security": [{
+                    "x-access-token": []
+                }],
+                "summary": "Get polls",
+                "description": "Get polls",
+                "tags": ["Polls"],
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "page",
+                        "required": false
+                    },
+                    {
+                        "name": "page",
+                        "in": "category",
+                        "description": "category poll",
+                        "required": false
+                    }
+                ],
                 "responses": {
                     "422": {
                         "description": "Unprocessable Entity",
@@ -161,13 +287,15 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref":"#/components/schemas/Authentication"
+                                    "items": {
+                                        "$ref":"#/components/schemas/Poll"
+                                    }
                                 }
                             }
                         }
                     },
                     "404": {
-                        "description": "Not found!",
+                        "description": "Not found",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -178,7 +306,106 @@
                     }
                 }
             }
-        }
+        },
+        "/polls/{id}": {
+            "get": {
+                "security": [{
+                    "x-access-token": []
+                }],
+                "summary": "Get poll",
+                "description": "Get poll",
+                "tags": ["Polls"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Poll ID",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "$ref":"#/components/schemas/APIError"
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref":"#/components/schemas/Poll"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref":"#/components/schemas/APIError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/polls/{id}/options/{optionsId}/users": {
+            "post": {
+                "summary": "Save poll option users",
+                "description": "Monetary transactions between users.",
+                "tags": ["Polls"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Poll ID",
+                        "required": true
+                    },
+                    {
+                        "name": "optionsId",
+                        "in": "path",
+                        "description": "Options ID",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "$ref":"#/components/schemas/APIError"
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref":"#/components/schemas/PollsOptionsUsers"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref":"#/components/schemas/APIError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }      
     },
     "components": {
         "schemas": {
@@ -265,6 +492,80 @@
                         } 
                     }
                 }   
+            },
+            "Poll": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "text": {
+                        "type": "string"
+                    },
+                    "category": {
+                        "type": "string"
+                    },
+                    "ops": {
+                        "type": "array"
+                    },
+                    "answers": {
+                        "type": "number"
+                    },
+                    "expiresAt": {
+                        "type": "string"
+                    },
+                    "createdByUserId": {
+                        "type": "number"
+                    },
+                    "createdAt": {
+                        "type": "string"
+                    },
+                    "updatedAt": {
+                        "type": "string"
+                    }                    
+                }              
+            },
+            "PollSchema": {
+                "type": "object",
+                "properties": {
+                    "poll": {
+                        "type": "object",
+                        "properties": {
+                            "text": {
+                                "type": "string"
+                            },
+                            "expiresAt": {
+                                "type": "string"
+                            },
+                            "ops": {
+                                "type": "array"
+                            },
+                            "category": {
+                                "type": "array"
+                            }
+                        }
+                    }                   
+                }                
+            },
+            "PollsOptionsUsers": {
+                "type": "object",
+                "properties": {
+                    "pollOptionId": {
+                        "type": "number"
+                    },
+                    "userId": {
+                        "type": "number"
+                    },
+                    "pollId": {
+                        "type": "number"
+                    },
+                    "createdAt": {
+                        "type": "string"
+                    },
+                    "updatedAt": {
+                        "type": "string"
+                    }  
+                }
             },
             "APIError": {
                 "type": "object",

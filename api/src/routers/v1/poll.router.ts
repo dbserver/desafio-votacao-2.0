@@ -62,7 +62,7 @@ pollRouter.get('/:id',
     }
 )
 
-pollRouter.post('/:id/options/:optionsId',
+pollRouter.post('/:id/options/:optionsId/users',
     Authentication.handlePermission(UserPermission.DEFAULT),
     async (req: express.Request, res: express.Response, next: express.NextFunction) => {
         try {

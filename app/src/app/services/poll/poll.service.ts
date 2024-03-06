@@ -37,7 +37,7 @@ export class PollService {
 
   async createPollOptionUser(pollId: number, optionsId: number) {
     return await lastValueFrom(this.http
-      .post<PollOptionUser>(`${environment.api}/v1/polls/${pollId}/options/${optionsId}`, {}))
+      .post<PollOptionUser>(`${environment.api}/v1/polls/${pollId}/options/${optionsId}/users`, {}))
   }
 
   async createPoll(dto: {
