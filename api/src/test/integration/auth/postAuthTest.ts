@@ -1,5 +1,4 @@
 import { postLogin } from "../../../controllers/auth/postLogin"
-import Users from "../../../entities/Users.entity"
 import Database from "../../../services/dataBase/database"
 import { userSchemaMock } from "../../mock/user.mock"
 
