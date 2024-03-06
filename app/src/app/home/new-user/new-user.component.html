@@ -1,0 +1,19 @@
+<div class="new-user">
+    <div  class="new-user__container" [formGroup]="newUserForm" *ngIf="newUserForm">
+        <h3>Criar usuário</h3>
+
+        <input type="text" class="form-control" formControlName="name" placeholder="Nome" id="newUserNome"> 
+
+        <input type="text" class="form-control" formControlName="document" placeholder="Cpf" id="newUserDocument" [mask]="maskCpf">
+
+        <input type="text" class="form-control" formControlName="email" placeholder="Email" id="newUserEmail">
+
+        <input type="password" class="form-control" formControlName="password" placeholder="Senha" id="newUserPassword">
+
+        <input type="password" class="form-control" formControlName="passwordConfirmed" placeholder="Confirmar senha" id="newUserPasswordConfirmed">
+
+        <!-- <input type="password" class="form-control" placeholder="Senha" id="newUserPassword"> -->
+
+        <button type="button" class="btn btn-primary" (click)="createUser()" [disabled]="newUserForm.invalid || validPassword()">Salvar</button>
+    </div>
+</div>

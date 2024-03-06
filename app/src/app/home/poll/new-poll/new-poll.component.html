@@ -1,0 +1,42 @@
+<div class="new-poll">
+    <h3>Criar votação</h3>
+
+    <div  class="new-poll__container">
+        <quill-editor 
+            #editor
+            placeholder="escreva seu votação..."
+            [formats]="formats"
+            [modules]="quillModules"
+            (onContentChanged)="change($event)"
+            >
+        </quill-editor>
+
+        <p class="form-label">Data de expiração:</p>
+
+        <div class="form-group mb-3">
+            <label class="form-label">Data:</label>
+            <input class="form-control" type="date" value="{{ dateInit }}" (change)='setPublishAt($event, 0)'>
+        </div>
+
+        <div class="form-group mb-3">
+            <label class="form-label">hora:</label>
+            <input class="form-control" type="time" value="{{ timeInit }}" (change)='setPublishAt($event, 1)'>
+        </div>
+
+        <div class="form-group mb-3">
+            <select class="form-select" (change)="setCategory($event)">
+                <option selected disabled>Categorias</option>
+                <option value="trabalho">Trabalho</option>
+                <option value="familia">Familia</option>
+                <option value="academia">Academia</option>
+                <option value="outros">Outros</option>
+            </select>
+        </div>
+        
+
+        <div class="btn-save">
+            <button type="button" class="btn btn-primary" [disabled]="this.textLen < 2 || !category" (click)="save()">Salvar</button>
+            <!-- <button class="btn btn-link" (click)="goPoll()"> voltar </button> -->
+        </div>
+    </div>
+</div>
