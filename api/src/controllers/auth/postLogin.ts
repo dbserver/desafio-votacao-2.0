@@ -49,7 +49,7 @@ export async function postLogin(document: string, password: string, manager = Da
     },
         process.env.SECRETJWT!
         , {
-            expiresIn: 30000
+            expiresIn: 1200
         }
     )
 
